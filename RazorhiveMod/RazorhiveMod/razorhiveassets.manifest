@@ -1,0 +1,79 @@
+ManifestFileVersion: 0
+CRC: 388259674
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 49a6c2cc10c4ce0ff7a4f33121fbd27e
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 3a2a99b5b0f9be3e3c16a6d057eed75d
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 96
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/Models/other/bees/texRampNullifierSmoothLowSaturation.png
+- Assets/Models/other/bees/Sphere, Unwrapped.asset
+- Assets/Models/other/bees/matNearbyDamageBonusRangeIndicator.mat
+- Assets/Models/other/bees/texCloudDifferenceBW2.png
+- Assets/Models/other/bees/texRampWhiteAlphaOnlyStrongest.png
+- Assets/Models/other/bees/texRampNullifierOffset.png
+- Assets/Models/other/bees/RazorhiveDisplay.prefab
+- Assets/Models/other/bees/bee item2.fbx
+- Assets/Models/other/bees/texRampWhiteAlphaOnlyStronger.png
+- Assets/Models/other/bees/texRampWhiteAlphaOnly.png
+- Assets/Models/other/bees/texBehemothTileMask.png
+- Assets/Models/other/bees/matVoidInfestorBillboard.mat
+- Assets/Models/other/bees/texAlphaGradient2Mask.png
+- Assets/Models/other/bees/RazorhiveIcon.png
+- Assets/Models/other/bees/RazorhiveOrbEffect.prefab
+- Assets/Models/other/bees/texOmniHitspark3Mask.png
+- Assets/Models/other/bees/matVoidRaidCrabSpawnSphere.mat
+- Assets/Models/other/bees/texCloudCrackedIceInverted.png
+- Assets/Models/other/bees/texAlphaGradient4Mask.png
+- Assets/Models/other/bees/beesMatDisplay.mat
+- Assets/Models/other/bees/texRampTritone2.png
+- Assets/Models/other/bees/texOmniRadialSlash2Mask.png
+- Assets/Models/other/bees/RazorhivePickupFinal.prefab
+- Assets/Models/other/bees/matOmniHitsparkVoid.mat
+- Assets/Models/other/bees/BeeSwarmBuff.png
+- Assets/Models/other/bees/beetextures.png
+- Assets/Models/other/bees/beenormal.png
+- Assets/Models/other/bees/texBuggyMask.png
+- Assets/Models/other/bees/HiveDamageBonus.prefab
+- Assets/Models/other/bees/matVoidInfestorTrail.mat
+- Assets/Models/other/bees/HiveImpactVFX.prefab
+- Assets/Models/other/bees/texOmniHitspark2Mask.png
+- Assets/Models/other/bees/RazorhivePickup.prefab
+- Assets/Models/other/bees/texRampNullifier.png
+- Assets/Models/other/bees/RazorhiveIcon512.png
+- Assets/Models/other/bees/matHiveBugs.mat
+- Assets/Models/other/bees/matLightningVoid.mat
+- Assets/Models/other/bees/beesMat.mat
+- Assets/Models/other/bees/texParticleDust1Mask.png
+Dependencies: []

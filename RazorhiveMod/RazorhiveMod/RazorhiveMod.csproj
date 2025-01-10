@@ -1,0 +1,97 @@
+﻿	<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Artifact\**" />
+    <Compile Remove="Equipment\EliteEquipment\**" />
+    <Compile Remove="language\**" />
+    <EmbeddedResource Remove="Artifact\**" />
+    <EmbeddedResource Remove="Equipment\EliteEquipment\**" />
+    <EmbeddedResource Remove="language\**" />
+    <None Remove="Artifact\**" />
+    <None Remove="Equipment\EliteEquipment\**" />
+    <None Remove="language\**" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="Equipment\EquipmentBase.cs" />
+		<Compile Remove="Equipment\ExampleEquipment.cs" />
+		<Compile Remove="Equipment\ExampleEquipWithTargeting.cs" />
+		<Compile Remove="Interactables\InteractableBase.cs" />
+		<Compile Remove="Interactables\PortalInteractable.cs" />
+		<Compile Remove="Items\AbyssalAdze.cs" />
+		<Compile Remove="Items\ClockworkMechanism.cs" />
+		<Compile Remove="Items\CoatOfScars.cs" />
+		<Compile Remove="Items\ConsumedClockworkMechanism.cs" />
+		<Compile Remove="Items\CorrosiveCore.cs" />
+		<Compile Remove="Items\CryoCanister.cs" />
+		<Compile Remove="Items\CrystalLotus.cs" />
+		<Compile Remove="Items\DashQuill.cs" />
+		<Compile Remove="Items\EmptyShell.cs" />
+		<Compile Remove="Items\EmptyVials.cs" />
+		<Compile Remove="Items\EnhancementVials.cs" />
+		<Compile Remove="Items\ExampleItem.cs" />
+		<Compile Remove="Items\ExeBlade.cs" />
+		<Compile Remove="Items\ExtraterrestrialExhaust.cs" />
+		<Compile Remove="Items\hive.cs" />
+		<Compile Remove="Items\LensOrrery.cs" />
+		<Compile Remove="Items\RelentlessRounds.cs" />
+		<Compile Remove="Items\the.cs" />
+		<Compile Remove="Items\UrchinTide.cs" />
+		<Compile Remove="Items\VoidShell.cs" />
+		<Compile Remove="Items\VoidSlug.cs" />
+		<Compile Remove="Items\WhorlShell.cs" />
+		<Compile Remove="Items\WickedStaff.cs" />
+		<Compile Remove="Items\yeah.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Remove="razorhiveassets" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<EmbeddedResource Include="razorhiveassets" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Equipment\" />
+		<Folder Include="Interactables\" />
+		<Folder Include="NetworkWeaver\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BepInEx.Analyzers" Version="1.0.*" />
+		<PackageReference Include="BepInEx.Core" Version="5.4.21" />
+		<PackageReference Include="R2API.ContentManagement" Version="1.0.6" />
+		<PackageReference Include="R2API.Core" Version="5.1.3" />
+		<PackageReference Include="R2API.DamageType" Version="1.1.3" />
+		<PackageReference Include="R2API.Director" Version="2.3.2" />
+		<PackageReference Include="R2API.Dot" Version="1.0.3" />
+		<PackageReference Include="R2API.Items" Version="1.0.4" />
+		<PackageReference Include="R2API.Language" Version="1.0.1" />
+		<PackageReference Include="R2API.Networking" Version="1.0.3" />
+		<PackageReference Include="R2API.Prefab" Version="1.0.4" />
+		<PackageReference Include="R2API.RecalculateStats" Version="1.4.0" />
+		<PackageReference Include="R2API.TempVisualEffect" Version="1.0.3" />
+    <PackageReference Include="R2API.Orb" Version="1.0.1" />
+		<PackageReference Include="RiskOfRain2.GameLibs" Version="1.3.6-r.0" />
+		<PackageReference Include="UnityEngine.Modules" Version="2021.3.33">
+		</PackageReference>
+    <PackageReference Include="MMHOOK.RoR2" Version="2024.12.10">
+      <NoWarn>NU1701</NoWarn>
+    </PackageReference>
+    
+	</ItemGroup>
+
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	  <Exec Command="REM First we copy the from the output folder to the NetworkWeaver folder.&#xD;&#xA;REM We store the output from robocopy in a file called robocopy which we'll delete at the end of the file.&#xD;&#xA;robocopy &quot;$(TargetDir) &quot; &quot;$(ProjectDir)NetworkWeaver&quot; &quot;$(TargetFileName)&quot; &gt; &quot;$(TargetDir)Robocopy&quot;&#xD;&#xA;robocopy &quot;$(TargetDir) &quot; &quot;$(ProjectDir)NetworkWeaver&quot; &quot;$(TargetName).pdb&quot; &gt; &quot;$(TargetDir)Robocopy&quot;&#xD;&#xA;&#xD;&#xA;REM Then we navigate our script to the NetworkWeaver folder to make the follow up line less verbose.&#xD;&#xA;cd &quot;$(ProjectDir)\NetworkWeaver&quot;&#xD;&#xA;&#xD;&#xA;REM Unity.UNetWeaver.exe {path to Coremodule} {Path to Networking} {Path to output folder} {Path to the dll you want patched} {Path to all needed references for the to-be-patched dll}&#xD;&#xA;Unity.UNetWeaver.exe &quot;../libs/UnityEngine.CoreModule.dll&quot; &quot;../libs/com.unity.multiplayer-hlapi.Runtime.dll&quot; &quot;Patched/&quot;  $(TargetFileName) &quot;$(ProjectDir)/libs&quot;&#xD;&#xA;&#xD;&#xA;REM We store the prepatched dll disabled as a .prepatch so that you can check it if you want, but first we need to make sure that file doesn't exist already.&#xD;&#xA;IF EXIST &quot;$(TargetFileName).prepatch&quot; (&#xD;&#xA;DEL /F &quot;$(TargetFileName).prepatch&quot;&#xD;&#xA;)&#xD;&#xA;IF EXIST &quot;$(TargetFileName).prepatch&quot; (&#xD;&#xA;DEL /F &quot;$(TargetFile).pdb.prepatch&quot;&#xD;&#xA;)&#xD;&#xA;&#xD;&#xA;REM Then we rename the prepatched file to bla.dll.prepatch&#xD;&#xA;ren &quot;$(TargetFileName)&quot; &quot;$(TargetFileName).prepatch&quot;&#xD;&#xA;ren &quot;$(TargetName).pdb&quot; &quot;$(TargetName).pdb.prepatch&quot;&#xD;&#xA;&#xD;&#xA;REM move our script to the Patched Folder&#xD;&#xA;cd Patched&#xD;&#xA;&#xD;&#xA;REM move from the current directory (.) to the projectDirectory and store the output once more to the Robocopy file.&#xD;&#xA;robocopy &quot;.&quot; &quot;$(ProjectDir) &quot; &quot;$(TargetFileName)&quot; &gt; &quot;$(TargetDir)Robocopy&quot;&#xD;&#xA;robocopy &quot;.&quot; &quot;$(ProjectDir) &quot; &quot;$(TargetName).pdb&quot; &gt; &quot;$(TargetDir)Robocopy&quot;&#xD;&#xA;&#xD;&#xA;REM Remove the patched file from the Patched folder, because the Weaver won't run if the file already exists.&#xD;&#xA;del &quot;$(TargetFileName)&quot;&#xD;&#xA;del &quot;$(TargetName).pdb&quot;&#xD;&#xA;&#xD;&#xA;REM Delete the holder for all robocopy output.&#xD;&#xA;del &quot;$(TargetDir)Robocopy&quot;" />
+	</Target>
+
+</Project>
