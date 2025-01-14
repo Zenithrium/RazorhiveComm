@@ -170,7 +170,7 @@ namespace RazorwireMod.Items
             baseRange = config.Bind<float>("Item: " + ItemName, "Base Range", 20, "Adjust the base range of the item, in meters.");
             stackingRange = config.Bind<float>("Item: " + ItemName, "Stacking Range", 0, "Adjust the range gained per stack, in meters.");
 
-            baseDuration = config.Bind<float>("Item: " + ItemName, "Base Duration", 3, "Adjust the duration the item remains active without any targets in seconds.");
+            baseDuration = config.Bind<float>("Item: " + ItemName, "Base Duration", 7, "Adjust the duration the item remains active without any targets in seconds.");
             stackingDuration = config.Bind<float>("Item: " + ItemName, "Stacking Duration", 0, "Adjust the additional duration gained per stack that the item remains active without any targets, in seconds.");
 
             frequency = config.Bind<float>("Item: " + ItemName, "Hit Frequency", .3f, "Adjust the delay between hits in seconds.");
@@ -1209,13 +1209,13 @@ namespace RazorwireMod.Items
             netb = aura.GetComponent<RazorhiveNetBehavior>();
             netb.RpcSetActive(false);
 
-            Debug.Log("Game Bar Enable ");
+            //Debug.Log("Game Bar Enable ");
 
             var hc = body.healthComponent;
             if (hc && Array.IndexOf(hc.onIncomingDamageReceivers, this) < 0)
             {
                 ArrayUtils.ArrayAppend(ref hc.onIncomingDamageReceivers, this);
-                Debug.Log("appended");
+                //Debug.Log("appended");
             }
             //body.healthComponent.TakeDamage
         }
@@ -1275,18 +1275,18 @@ namespace RazorwireMod.Items
             if (hc && Array.IndexOf(hc.onIncomingDamageReceivers, this) is var index && index >= 0)
             {
                 ArrayUtils.ArrayRemoveAtAndResize(ref hc.onIncomingDamageReceivers, index);
-                Debug.Log("reshmoved");
+                //Debug.Log("reshmoved");
             }
             if (body.HasBuff(Razorhive.beesActive)) { body.RemoveBuff(Razorhive.beesActive); }
             netb.RpcSetActive(false);
             active = false;
             Destroy(aura);
             aura = null;
-            Debug.Log("Death");
+            //Debug.Log("Death");
         }
 
         public void OnDamageDealtServer(DamageReport damageReport){
-            Debug.Log("danage dealt");
+            //Debug.Log("danage dealt");
             if (damageReport.damageInfo.HasModdedDamageType(Razorhive.BeesType)){
                 if (!body.HasBuff(Razorhive.beesActive)) { body.AddBuff(Razorhive.beesActive); }
                 //if (!aura){
@@ -1297,14 +1297,14 @@ namespace RazorwireMod.Items
                 aura.transform.localScale = new Vector3(scale, scale, scale);
                 active = true;
                 duration = Razorhive.instance.baseDuration.Value + (Razorhive.instance.stackingDuration.Value * (stack - 1));
-                Debug.Log("refreshed via damage");
+                //Debug.Log("refreshed via damage");
                 netb.RpcSetActive(true);
             }
         }
 
         public void OnIncomingDamageServer(DamageInfo damageInfo)
         {
-            Debug.Log("OnIncomingDamageServer");
+            //Debug.Log("OnIncomingDamageServer");
             if (!body.HasBuff(Razorhive.beesActive)) { body.AddBuff(Razorhive.beesActive); }
             //if (!aura){
             //    aura = UnityEngine.Object.Instantiate<GameObject>(Razorhive.beesAura, body.corePosition, Quaternion.identity);
@@ -1315,7 +1315,7 @@ namespace RazorwireMod.Items
             aura.transform.localScale = new Vector3(scale, scale, scale);
             active = true;
             duration = Razorhive.instance.baseDuration.Value + (Razorhive.instance.stackingDuration.Value * (stack - 1));
-            Debug.Log("recieved");
+            //Debug.Log("recieved");
             netb.RpcSetActive(true);
         }
     }

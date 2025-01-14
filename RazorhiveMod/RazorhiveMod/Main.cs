@@ -33,15 +33,14 @@ namespace RazorwireMod {
     [BepInDependency("com.bepis.r2api.items", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.bepis.r2api.language", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.bepis.r2api.prefab", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInDependency("com.bepis.r2api.recalculatestats", BepInDependency.DependencyFlags.HardDependency)]
-    [BepInDependency("com.bepis.r2api.director", BepInDependency.DependencyFlags.HardDependency)]
+    //[BepInDependency("com.bepis.r2api.recalculatestats", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.bepis.r2api.networking", BepInDependency.DependencyFlags.HardDependency)]
 
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
     public class RazorwireModPlugin : BaseUnityPlugin
     {
-        public const string ModGuid = "com.Zenithrium.RazorhiveMod";
-        public const string ModName = "RazorhiveMod";
+        public const string ModGuid = "com.Zenithrium.Razorhive";
+        public const string ModName = "Razorhive";
         public const string ModVer = "1.0.0";
 
         public static ExpansionDef sotvDLC;
