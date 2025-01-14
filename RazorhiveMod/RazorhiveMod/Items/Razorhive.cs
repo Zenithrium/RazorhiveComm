@@ -12,6 +12,8 @@ using HarmonyLib;
 using static RazorwireMod.RazorwireModPlugin;
 using RoR2.Orbs;
 using RoR2.Items;
+using System.Linq;
+using HG;
 
 namespace RazorwireMod.Items
 {
@@ -141,23 +143,10 @@ namespace RazorwireMod.Items
             mpp.minDistance = 1f;
             mpp.maxDistance = 3f;
             mpp.modelRotation = Quaternion.Euler(new Vector3(0, -7.5f, 0));
-            //trail1.gameObject.SetActive(false);
-            //var trail2 = tparent.transform.Find("Trail");
-            //trail2.gameObject.SetActive(true);
-            //
-            //trail1.GetComponent<TrailRenderer>().materials[0] = Addressables.LoadAssetAsync<Material>("RoR2/DLC1/EliteVoid/matVoidInfestorTrail.mat").WaitForCompletion();
-            //beesAura.transform.localScale = new Vector3(1.923f, 1.923f, 1.923f);
-            //beesAura.GetComponent<>
 
-            //var adzeOrbsModelTransp = ItemModel.transform.Find("orbTransp").GetComponent<MeshRenderer>();
 
             Hooks();
         }
-
-        //public override string VoidPair()
-        //{
-        //    return voidPair.Value;
-        //}
 
         public void CreateBuff()
         {
@@ -169,7 +158,6 @@ namespace RazorwireMod.Items
             beesActive.iconSprite = RazorwireModPlugin.MainAssets.LoadAsset<Sprite>("BeeSwarmBuff");
             ContentAddition.AddBuffDef(beesActive);
         }
-
 
         public override void CreateConfig(ConfigFile config)
         {
@@ -1196,53 +1184,6 @@ namespace RazorwireMod.Items
         }
 
         public override void Hooks(){ }
-
-        //private void DoBees(On.RoR2.HealthComponent.orig_TakeDamage orig, HealthComponent self, DamageInfo damageInfo) {
-        //    orig(self, damageInfo);
-        //    Debug.Log("damage");
-        //    if (self && self.body && self.body.inventory) { //hit refresh/activate
-        //        var stackCount = GetCount(self.body);
-        //        if (stackCount > 0) {
-        //            Debug.Log("has item");
-        //            var token = self.body.GetComponent<BeesToken>();
-        //            var dur = baseDuration.Value + (stackingDuration.Value * (stackCount - 1));
-        //            if (!token) {
-        //                Debug.Log("no token");
-        //                token = self.body.gameObject.AddComponent<BeesToken>();
-        //                //token.itemCount = stackCount;
-        //                token.atkSpeed = self.body.attackSpeed;
-        //                token.body = self.body;
-        //                token.damageType = BeesType;
-        //                token.buff = beesActive;
-        //                token.indicator = UnityEngine.Object.Instantiate<GameObject>(beesAura, self.body.corePosition, Quaternion.identity);
-        //                token.indicator.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(self.body.gameObject, null);
-        //
-        //                var range = ItemBase<Razorhive>.instance.baseRange.Value + (ItemBase<Razorhive>.instance.stackingRange.Value * (stackCount - 1));
-        //                token.indicator.transform.localScale = new Vector3(range / 13, range / 13, range / 13);
-        //                token.duration = dur;
-        //                self.body.AddBuff(beesActive);
-        //
-        //            } else {
-        //                Debug.Log("refres");
-        //                token.duration = dur;
-        //                //token.itemCount = stackCount;
-        //            }
-        //
-        //        }
-        //    }
-        //
-        //    if (damageInfo.HasModdedDamageType(BeesType)) { //dealt refresh
-        //        var attacker = damageInfo.attacker;
-        //        if (attacker) {
-        //            var token = attacker.GetComponent<BeesToken>();
-        //            if (token) {
-        //                Debug.Log("refres");
-        //                token.duration = baseDuration.Value + (stackingDuration.Value * (token.itemCount - 1));
-        //            }
-        //        }
-        //    }
-        //}
-
     }
 
     public class HiveBehavior : BaseItemBodyBehavior, IOnDamageDealtServerReceiver, IOnIncomingDamageServerReceiver {
@@ -1258,7 +1199,6 @@ namespace RazorwireMod.Items
         public GameObject indicator;
 
         public RazorhiveNetBehavior netb;
-
         bool active = false;
 
         private void OnEnable() {
@@ -1269,7 +1209,14 @@ namespace RazorwireMod.Items
             netb = aura.GetComponent<RazorhiveNetBehavior>();
             netb.RpcSetActive(false);
 
-            Debug.Log("Game Bar Enable");
+            Debug.Log("Game Bar Enable ");
+
+            var hc = body.healthComponent;
+            if (hc && Array.IndexOf(hc.onIncomingDamageReceivers, this) < 0)
+            {
+                ArrayUtils.ArrayAppend(ref hc.onIncomingDamageReceivers, this);
+                Debug.Log("appended");
+            }
             //body.healthComponent.TakeDamage
         }
 
@@ -1324,13 +1271,22 @@ namespace RazorwireMod.Items
         }
 
         private void OnDisable(){
+            var hc = body.healthComponent;
+            if (hc && Array.IndexOf(hc.onIncomingDamageReceivers, this) is var index && index >= 0)
+            {
+                ArrayUtils.ArrayRemoveAtAndResize(ref hc.onIncomingDamageReceivers, index);
+                Debug.Log("reshmoved");
+            }
+            if (body.HasBuff(Razorhive.beesActive)) { body.RemoveBuff(Razorhive.beesActive); }
+            netb.RpcSetActive(false);
+            active = false;
             Destroy(aura);
             aura = null;
             Debug.Log("Death");
         }
 
         public void OnDamageDealtServer(DamageReport damageReport){
-
+            Debug.Log("danage dealt");
             if (damageReport.damageInfo.HasModdedDamageType(Razorhive.BeesType)){
                 if (!body.HasBuff(Razorhive.beesActive)) { body.AddBuff(Razorhive.beesActive); }
                 //if (!aura){
@@ -1348,6 +1304,7 @@ namespace RazorwireMod.Items
 
         public void OnIncomingDamageServer(DamageInfo damageInfo)
         {
+            Debug.Log("OnIncomingDamageServer");
             if (!body.HasBuff(Razorhive.beesActive)) { body.AddBuff(Razorhive.beesActive); }
             //if (!aura){
             //    aura = UnityEngine.Object.Instantiate<GameObject>(Razorhive.beesAura, body.corePosition, Quaternion.identity);

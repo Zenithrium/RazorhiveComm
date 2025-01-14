@@ -22,7 +22,7 @@ using RoR2.EntitlementManagement;
 using On.RoR2.Items;
 using RoR2.ContentManagement;
 using AK.Wwise;
-//using static vanillaVoid.Utils.Components.MaterialControllerComponents;
+
 [assembly: HG.Reflection.SearchableAttribute.OptIn]
 
 namespace RazorwireMod {
@@ -35,18 +35,9 @@ namespace RazorwireMod {
     [BepInDependency("com.bepis.r2api.prefab", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.bepis.r2api.recalculatestats", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.bepis.r2api.director", BepInDependency.DependencyFlags.HardDependency)]
-    //[BepInDependency("com.bepis.r2api.networking", BepInDependency.DependencyFlags.HardDependency)]
-
-    //[BepInDependency("com.RumblingJOSEPH.VoidItemAPI", BepInDependency.DependencyFlags.HardDependency)]
-    //[BepInDependency(VoidItemAPI.VoidItemAPI.MODGUID)]
+    [BepInDependency("com.bepis.r2api.networking", BepInDependency.DependencyFlags.HardDependency)]
 
     [NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-    //[BepInDependency(R2API.R2API.PluginGUID, R2API.R2API.PluginVersion)]
-    //[NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
-    //[R2APISubmoduleDependency(nameof(ItemAPI), nameof(LanguageAPI), nameof(RecalculateStatsAPI), nameof(PrefabAPI), nameof(LegacyResourcesAPI))]
-
-    //[BepInDependency(VoidItemAPI.VoidItemAPI.MODGUID)]
-
     public class RazorwireModPlugin : BaseUnityPlugin
     {
         public const string ModGuid = "com.Zenithrium.RazorhiveMod";
@@ -386,5 +377,8 @@ namespace RazorwireMod {
 
             }
         }
+
+
+
     }
 }
